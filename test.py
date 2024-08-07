@@ -51,20 +51,18 @@ def main():
     zipCodeLayer = settersList[2]
     #Sets the environment settings for easy access to layers and information
     environmentSet(geodatabase)
-    print(testOutput)
 
     initialSelection = initialPossibleIntersections(layerName)
     #zipcodeSelection = zipcodeLayerSelect(layerName, zipCodeLayer, initialSelection)
 
-    fields = ["OBJECTID", "FID_RoadCenterLine", "FID_RoadCenterLine_1"]
-    with arcpy.da.SearchCursor(initialSelection, fields) as cursor:
+    with arcpy.SearchCursor(initialSelection, ["OBJECTID@", "FID_RoadCenterLine@", "FID_RoadCenterLine_1@"]) as cursor:
         for row in cursor:
-            SQLStatement = "OBJECTID = " + str(row[1]) + " And OBJECTID = " + str(row[2])
-            print(SQLStatement)
-            selection = arcpy.management.SelectLayerByAttribute(layerName, "NEW_SELECTION", SQLStatement)
-            test = pd.DataFrame.spatial.from_featureclass(selection[0])
-            print(test) 
+            print(row) 
 
+
+    #storage = pd.DataFrame.spatial.from_featureclass(zipcodeSelection[0])
+    #print(storage)
+    
 
 #Runs the main function for the program
 if __name__=="__main__":
